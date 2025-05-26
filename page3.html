@@ -333,9 +333,10 @@
         fetch(form.action, {
           method: form.method,
           body: formData,
+          redirect: "follow",
         })
           .then((response) => {
-            if (response.status >= 200 && response.status < 400) {
+            if (response.status === 200 || response.status === 302) {
               closeWishForm();
               wishMsgModal.style.display = "flex";
               startConfetti();
