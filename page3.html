@@ -1,31 +1,48 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Specialforyayaaa</title>
-    <link rel="icon" href="assets/yaya.png" />
+    <link rel="icon" href="assets/yaya.png" type="image/x-icon" />
+    <title>Specialforyayaaa - Make a Wish</title>
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link
       href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
     <style>
       body {
         font-family: "Mali", cursive;
-        background: url("assets/b2.jpg") no-repeat center center fixed;
+        background: url("assets/b1.jpg") no-repeat center center fixed;
         background-size: cover;
         min-height: 100vh;
         overflow-x: hidden;
-        overflow-y: auto;
+        position: relative;
       }
-      .shadow-blue {
-        box-shadow: 0 8px 20px rgba(139, 147, 255, 0.6);
+      .modal-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 50;
+      }
+      .modal-content {
+        background: white;
+        border-radius: 1rem;
+        max-width: 400px;
+        width: 90%;
+        padding: 1.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        max-height: 90vh;
+        overflow-y: auto;
       }
       .confetti {
         position: fixed;
@@ -36,7 +53,6 @@
         animation-name: fall;
         animation-timing-function: linear;
         animation-iteration-count: infinite;
-        z-index: 1;
       }
       @keyframes fall {
         0% {
@@ -45,23 +61,6 @@
         100% {
           transform: translateY(100vh) rotate(360deg);
         }
-      }
-      .card-hover {
-        transition: transform 0.25s ease;
-        transform-origin: center;
-        cursor: pointer;
-      }
-      .card-hover:hover {
-        transform: scale(1.05) translateY(-0.1rem);
-      }
-      #playPauseBtn,
-      #nextBtn {
-        transition: transform 0.3s ease;
-        transform-origin: center;
-      }
-      #playPauseBtn:hover,
-      #nextBtn:hover {
-        transform: scale(1.1);
       }
     </style>
     <script>
@@ -78,10 +77,11 @@
       };
     </script>
   </head>
+
   <body
-    class="flex flex-col items-center justify-center min-h-screen p-4 relative overflow-hidden"
+    class="bg-putihpink min-h-screen flex flex-col justify-center items-center text-center px-4 sm:px-6 lg:px-8 py-6"
   >
-    <!-- Confetti elements -->
+    <!-- Confetti fallback -->
     <script>
       for (let i = 0; i < 30; i++) {
         const confetti = document.createElement("div");
@@ -96,76 +96,105 @@
       }
     </script>
 
-    <!-- Judul -->
     <div
       data-aos="fade-up"
       data-aos-duration="1000"
       data-aos-delay="200"
-      class="z-10 text-center mb-6"
+      class="z-10 mb-6"
     >
       <h1
-        class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-bluesoft drop-shadow-lg"
+        class="text-3xl sm:text-4xl md:text-5xl font-bold text-bluesoft leading-tight"
       >
-        Play dulu ga siii
+        Make a Wish, Yayaa!!!
       </h1>
     </div>
 
-    <!-- Card Now Playing -->
     <div
-      class="card-hover rounded-3xl z-10 w-full max-w-[320px] sm:max-w-md mx-auto"
+      data-aos="zoom-in"
+      data-aos-duration="700"
+      data-aos-delay="600"
+      class="flex flex-col items-center mb-8"
     >
-      <div
-        data-aos="zoom-in"
-        data-aos-duration="700"
-        data-aos-delay="600"
-        class="shadow-blue rounded-3xl shadow-xl p-4 sm:p-6 w-full text-center bg-white bg-opacity-90"
+      <button
+        onclick="openWishForm()"
+        class="bg-pinksoft text-putihpink px-4 py-2 rounded-full font-bold hover:bg-bluesoft transition text-base sm:text-lg"
       >
-        <div class="flex flex-row items-center gap-4 mb-6 text-left">
-          <img
-            src="assets/cover.jpeg"
-            alt="cover"
-            class="w-16 h-16 sm:w-20 sm:h-20 rounded shadow self-center"
-          />
-          <div class="flex-1 w-full">
-            <h2 class="text-md sm:text-lg font-bold text-gray-900">
-              Last Night on Earth
-            </h2>
-            <p class="text-sm text-gray-600">Green Day</p>
-            <p class="text-xs text-gray-500 mt-1">21st Century Breakdown</p>
-          </div>
-        </div>
+        Make a Wish
+      </button>
+    </div>
 
-        <!-- Progress Bar -->
-        <div
-          class="relative w-full h-2 bg-pinksoft/30 rounded-full overflow-hidden mb-3"
-          aria-label="progress bar"
-          role="progressbar"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-valuenow="0"
-          id="progressContainer"
+    <!-- Modal Form -->
+    <div id="wishFormModal" class="modal-bg">
+      <div
+        class="modal-content max-w-md w-full p-6 sm:p-8"
+        data-aos="zoom-in"
+        data-aos-duration="300"
+      >
+        <h2 class="text-bluesoft text-xl sm:text-2xl font-bold mb-4">
+          Make a Wish, Yayaa!
+        </h2>
+        <!-- FORM PAKAI GETFORM -->
+        <form
+          id="wishForm"
+          class="flex flex-col"
+          method="POST"
+          action="https://getform.io/f/aqomorwa"
+          onsubmit="handleSubmit(event)"
         >
-          <div
-            id="progressBar"
-            class="h-full bg-pinksoft rounded-full w-0 transition-all duration-200"
-          ></div>
-        </div>
-
-        <!-- Play Button -->
-        <div class="flex justify-center items-center gap-6">
-          <button
-            id="playPauseBtn"
-            class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-bluesoft text-putihpink shadow-lg text-xl sm:text-2xl"
-            aria-label="Play/Pause"
-          >
-            <i class="fas fa-play"></i>
-          </button>
-        </div>
+          <textarea
+            name="wish"
+            id="wishInput"
+            required
+            placeholder="Tulis harapan kamu..."
+            class="mb-4 px-4 py-3 rounded-lg w-full h-36 sm:h-40 border border-pinksoft focus:outline-none focus:ring-2 focus:ring-pinksoft resize-none text-base sm:text-lg"
+          ></textarea>
+          <div class="flex justify-between items-center">
+            <button
+              type="button"
+              onclick="closeWishForm()"
+              class="bg-gray-400 text-white px-5 py-2 rounded-full hover:bg-gray-600 transition text-base"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              class="bg-bluesoft text-putihpink font-bold py-2 px-6 rounded-full hover:bg-pinksoft transition text-base"
+            >
+              Kirim Wish 🎁
+            </button>
+          </div>
+        </form>
       </div>
     </div>
 
-    <!-- Hidden Audio -->
-    <audio id="audioPlayer" preload="auto" crossorigin="anonymous">
+    <!-- Modal Message -->
+    <div id="wishMsgModal" class="modal-bg">
+      <div class="modal-content" data-aos="zoom-in" data-aos-duration="300">
+        <h2
+          class="text-bluesoft text-xl font-semibold mb-4 whitespace-pre-line"
+        >
+          Semoga semua harapan Yayaa terkabul yaa, kamu pantas dapat yang
+          terbaik di dunia ini.
+        </h2>
+        <button
+          onclick="closeWishMsg()"
+          class="bg-pinksoft text-putihpink px-6 py-3 rounded-full font-bold hover:bg-bluesoft transition"
+        >
+          Tutup
+        </button>
+      </div>
+    </div>
+
+    <div id="nextBtn" class="mt-8 hidden" data-aos="fade-up">
+      <button
+        onclick="location.href='page4.html'"
+        class="bg-bluesoft text-putihpink px-6 py-3 rounded-full font-bold hover:bg-pinksoft transition"
+      >
+        Lanjut
+      </button>
+    </div>
+
+    <audio id="audioPlayer" preload="auto">
       <source
         src="assets/Last Night on Earth - Green Day.mp3"
         type="audio/mpeg"
@@ -173,92 +202,153 @@
       Browsermu tidak mendukung pemutar audio.
     </audio>
 
-    <!-- Tombol Lanjut -->
-    <button
-      id="nextBtn"
-      onclick="location.href='page3.html'"
-      class="z-10 mt-6 bg-pinksoft text-white font-bold py-2 px-5 sm:px-6 rounded-full shadow-md text-sm sm:text-base"
-      data-aos="fade-up"
-      data-aos-duration="1000"
-      data-aos-delay="900"
-    >
-      lanjutt
-    </button>
+    <canvas
+      id="confetti-canvas"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 100;
+        display: none;
+      "
+    ></canvas>
 
-    <!-- AOS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
       AOS.init();
-    </script>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const audio = document.getElementById("audioPlayer");
-        const playPauseBtn = document.getElementById("playPauseBtn");
-        const progressBar = document.getElementById("progressBar");
-        const icon = playPauseBtn.querySelector("i");
+      const audio = document.getElementById("audioPlayer");
+      const savedIsPlaying = localStorage.getItem("audioIsPlaying") === "true";
+      const savedTime =
+        parseFloat(localStorage.getItem("audioCurrentTime")) || 0;
+      audio.currentTime = savedTime;
+      if (savedIsPlaying) audio.play().catch(() => {});
 
-        const savedIsPlaying =
-          localStorage.getItem("audioIsPlaying") === "true";
-        const savedTime =
-          parseFloat(localStorage.getItem("audioCurrentTime")) || 0;
-
-        audio.currentTime = savedTime;
-
-        function syncIcon() {
-          if (!audio.paused) {
-            icon.classList.remove("fa-play");
-            icon.classList.add("fa-pause");
-          } else {
-            icon.classList.remove("fa-pause");
-            icon.classList.add("fa-play");
-          }
-        }
-
-        if (savedIsPlaying) {
-          audio
-            .play()
-            .then(() => syncIcon())
-            .catch((e) => {
-              console.warn("Autoplay diblokir oleh browser:", e);
-              syncIcon();
-            });
-        } else {
-          syncIcon();
-        }
-
-        playPauseBtn.addEventListener("click", () => {
-          if (audio.paused) {
-            audio
-              .play()
-              .then(() => {
-                localStorage.setItem("audioIsPlaying", "true");
-                syncIcon();
-              })
-              .catch((e) => {
-                console.error("Gagal play:", e);
-              });
-          } else {
-            audio.pause();
-            localStorage.setItem("audioIsPlaying", "false");
-            syncIcon();
-          }
-          localStorage.setItem("audioCurrentTime", audio.currentTime);
-        });
-
-        audio.addEventListener("timeupdate", () => {
-          if (!isNaN(audio.duration) && audio.duration > 0) {
-            const progress = (audio.currentTime / audio.duration) * 100;
-            progressBar.style.width = progress + "%";
-          }
-          localStorage.setItem("audioCurrentTime", audio.currentTime);
-        });
-
-        window.addEventListener("beforeunload", () => {
-          localStorage.setItem("audioCurrentTime", audio.currentTime);
-          localStorage.setItem("audioIsPlaying", !audio.paused);
-        });
+      window.addEventListener("beforeunload", () => {
+        localStorage.setItem("audioCurrentTime", audio.currentTime);
+        localStorage.setItem("audioIsPlaying", !audio.paused);
       });
+
+      const wishFormModal = document.getElementById("wishFormModal");
+      const wishMsgModal = document.getElementById("wishMsgModal");
+      const nextBtn = document.getElementById("nextBtn");
+      const confettiCanvas = document.getElementById("confetti-canvas");
+      const confettiCtx = confettiCanvas.getContext("2d");
+
+      function resizeConfettiCanvas() {
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+      }
+      resizeConfettiCanvas();
+      window.addEventListener("resize", resizeConfettiCanvas);
+
+      class ConfettiParticle {
+        constructor() {
+          this.x = Math.random() * confettiCanvas.width;
+          this.y = -Math.random() * confettiCanvas.height;
+          this.size = Math.random() * 8 + 4;
+          this.speedX = (Math.random() - 0.5) * 3;
+          this.speedY = Math.random() * 4 + 2;
+          this.color = `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`;
+          this.rotation = Math.random() * 360;
+          this.rotationSpeed = (Math.random() - 0.5) * 10;
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          this.rotation += this.rotationSpeed;
+          if (this.y > confettiCanvas.height) {
+            this.y = -this.size;
+            this.x = Math.random() * confettiCanvas.width;
+          }
+        }
+        draw() {
+          confettiCtx.save();
+          confettiCtx.translate(this.x, this.y);
+          confettiCtx.rotate((this.rotation * Math.PI) / 180);
+          confettiCtx.fillStyle = this.color;
+          confettiCtx.fillRect(
+            -this.size / 2,
+            -this.size / 2,
+            this.size,
+            this.size
+          );
+          confettiCtx.restore();
+        }
+      }
+
+      let confettiParticles = [];
+      let confettiAnimationId;
+
+      function startConfetti() {
+        confettiParticles = Array.from(
+          { length: 100 },
+          () => new ConfettiParticle()
+        );
+        confettiCanvas.style.display = "block";
+        animateConfetti();
+      }
+
+      function animateConfetti() {
+        confettiCtx.clearRect(
+          0,
+          0,
+          confettiCanvas.width,
+          confettiCanvas.height
+        );
+        confettiParticles.forEach((p) => {
+          p.update();
+          p.draw();
+        });
+        confettiAnimationId = requestAnimationFrame(animateConfetti);
+      }
+
+      function stopConfetti() {
+        cancelAnimationFrame(confettiAnimationId);
+        confettiCanvas.style.display = "none";
+      }
+
+      function openWishForm() {
+        wishFormModal.style.display = "flex";
+      }
+
+      function closeWishForm() {
+        wishFormModal.style.display = "none";
+      }
+
+      function closeWishMsg() {
+        wishMsgModal.style.display = "none";
+        stopConfetti();
+      }
+
+      // Handle form submit with Fetch API, perbaikan cek status
+      function handleSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+          method: form.method,
+          body: formData,
+        })
+          .then((response) => {
+            if (response.status >= 200 && response.status < 400) {
+              closeWishForm();
+              wishMsgModal.style.display = "flex";
+              startConfetti();
+              nextBtn.classList.remove("hidden");
+              form.reset();
+            } else {
+              alert("Oops! Terjadi kesalahan saat mengirim. Coba lagi ya.");
+            }
+          })
+          .catch(() => {
+            alert("Tidak dapat mengirim. Cek koneksi internetmu.");
+          });
+      }
     </script>
   </body>
 </html>
