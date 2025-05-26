@@ -6,15 +6,12 @@
     <link rel="icon" href="assets/yaya.png" type="image/x-icon" />
     <title>Specialforyayaaa - Make a Wish</title>
 
-    <!-- AOS Animations -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-
-    <!-- Google Fonts Mali -->
-    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap" rel="stylesheet" />
-
-    <!-- TailwindCSS CDN -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
-
     <style>
       body {
         font-family: "Mali", cursive;
@@ -24,7 +21,6 @@
         overflow-x: hidden;
         position: relative;
       }
-
       .modal-bg {
         position: fixed;
         top: 0;
@@ -37,7 +33,6 @@
         align-items: center;
         z-index: 50;
       }
-
       .modal-content {
         background: white;
         border-radius: 1rem;
@@ -46,8 +41,9 @@
         padding: 1.5rem;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         text-align: center;
+        max-height: 90vh;
+        overflow-y: auto;
       }
-
       .confetti {
         position: fixed;
         width: 10px;
@@ -58,7 +54,6 @@
         animation-timing-function: linear;
         animation-iteration-count: infinite;
       }
-
       @keyframes fall {
         0% {
           transform: translateY(0) rotate(0deg);
@@ -68,7 +63,6 @@
         }
       }
     </style>
-
     <script>
       tailwind.config = {
         theme: {
@@ -84,8 +78,9 @@
     </script>
   </head>
 
-  <body class="bg-putihpink min-h-screen flex flex-col justify-center items-center text-center p-6">
-    <!-- Confetti -->
+  <body
+    class="bg-putihpink min-h-screen flex flex-col justify-center items-center text-center px-4 sm:px-6 lg:px-8 py-6"
+  >
     <script>
       for (let i = 0; i < 30; i++) {
         const confetti = document.createElement("div");
@@ -93,38 +88,62 @@
         confetti.style.left = Math.random() * 100 + "vw";
         confetti.style.animationDuration = 3 + Math.random() * 3 + "s";
         const colors = ["#FF90BC", "#8B93FF", "#FFF7FC"];
-        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.backgroundColor =
+          colors[Math.floor(Math.random() * colors.length)];
         confetti.style.top = "-" + Math.random() * 20 + "vh";
         document.body.appendChild(confetti);
       }
     </script>
 
-    <!-- Judul -->
     <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" class="z-10 mb-6">
-      <h1 class="text-4xl sm:text-5xl font-bold text-bluesoft">Make a Wish, Yayaa!!!</h1>
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-bluesoft leading-tight">
+        Make a Wish, Yayaa!!!
+      </h1>
     </div>
 
-    <!-- Tombol Make a Wish -->
-    <div data-aos="zoom-in" data-aos-duration="700" data-aos-delay="600" class="flex flex-col items-center mb-8">
-      <button onclick="openWishForm()" class="bg-pinksoft text-putihpink px-6 py-3 rounded-full font-bold hover:bg-bluesoft transition">
+    <div
+      data-aos="zoom-in"
+      data-aos-duration="700"
+      data-aos-delay="600"
+      class="flex flex-col items-center mb-8"
+    >
+      <button
+        onclick="openWishForm()"
+        class="bg-pinksoft text-putihpink px-8 py-4 rounded-full font-bold hover:bg-bluesoft transition text-lg sm:text-xl"
+      >
         Make a Wish
       </button>
     </div>
 
     <!-- Modal Form -->
     <div id="wishFormModal" class="modal-bg">
-      <div class="modal-content" data-aos="zoom-in" data-aos-duration="300">
-        <h2 class="text-bluesoft text-2xl font-bold mb-4">Make a Wish, Yayaa!</h2>
-        <form action="https://formsubmit.co/azzzzk366@gmail.com" method="POST" onsubmit="return handleFormSubmit(event)" class="flex flex-col">
-          <textarea name="wish" required placeholder="Tulis harapan kamu..." class="mb-4 px-4 py-3 rounded-lg w-full h-40 border border-pinksoft focus:outline-none focus:ring-2 focus:ring-pinksoft resize-none"></textarea>
+      <div class="modal-content max-w-md w-full p-6 sm:p-8" data-aos="zoom-in" data-aos-duration="300">
+        <h2 class="text-bluesoft text-xl sm:text-2xl font-bold mb-4">
+          Make a Wish, Yayaa!
+        </h2>
+        <form id="wishForm" class="flex flex-col">
+          <textarea
+            name="wish"
+            id="wishInput"
+            required
+            placeholder="Tulis harapan kamu..."
+            class="mb-4 px-4 py-3 rounded-lg w-full h-36 sm:h-40 border border-pinksoft focus:outline-none focus:ring-2 focus:ring-pinksoft resize-none text-base sm:text-lg"
+          ></textarea>
           <input type="hidden" name="_captcha" value="false" />
           <input type="hidden" name="_subject" value="Wish dari Website Yayaa" />
           <input type="hidden" name="_next" value="thanks.html" />
           <div class="flex justify-between items-center">
-            <button type="button" onclick="closeWishForm()" class="bg-gray-400 text-white px-4 py-2 rounded-full hover:bg-gray-600 transition">
+            <button
+              type="button"
+              onclick="closeWishForm()"
+              class="bg-gray-400 text-white px-5 py-2 rounded-full hover:bg-gray-600 transition text-base"
+            >
               Batal
             </button>
-            <button type="submit" class="bg-bluesoft text-putihpink font-bold py-2 px-6 rounded-full hover:bg-pinksoft transition">
+            <button
+              type="submit"
+              class="bg-bluesoft text-putihpink font-bold py-2 px-6 rounded-full hover:bg-pinksoft transition text-base"
+            >
               Kirim Wish 🎁
             </button>
           </div>
@@ -138,31 +157,35 @@
         <h2 class="text-bluesoft text-xl font-semibold mb-4 whitespace-pre-line">
           Semoga semua harapan Yayaa terkabul yaa, kamu pantas dapat yang terbaik di dunia ini.
         </h2>
-        <button onclick="closeWishMsg()" class="bg-pinksoft text-putihpink px-6 py-3 rounded-full font-bold hover:bg-bluesoft transition">
+        <button
+          onclick="closeWishMsg()"
+          class="bg-pinksoft text-putihpink px-6 py-3 rounded-full font-bold hover:bg-bluesoft transition"
+        >
           Tutup
         </button>
       </div>
     </div>
 
-    <!-- Tombol Lanjut -->
     <div id="nextBtn" class="mt-8 hidden" data-aos="fade-up">
-      <button onclick="location.href='page4.html'" class="bg-bluesoft text-putihpink px-6 py-3 rounded-full font-bold hover:bg-pinksoft transition">
+      <button
+        onclick="location.href='page4.html'"
+        class="bg-bluesoft text-putihpink px-6 py-3 rounded-full font-bold hover:bg-pinksoft transition"
+      >
         Lanjut
       </button>
     </div>
 
-    <!-- Audio -->
     <audio id="audioPlayer" preload="auto">
       <source src="assets/Last Night on Earth - Green Day.mp3" type="audio/mpeg" />
       Browsermu tidak mendukung pemutar audio.
     </audio>
 
-    <!-- Canvas Confetti -->
-    <canvas id="confetti-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 100; display: none;"></canvas>
+    <canvas
+      id="confetti-canvas"
+      style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 100; display: none;"
+    ></canvas>
 
-    <!-- AOS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
     <script>
       AOS.init();
 
@@ -253,16 +276,19 @@
 
       function closeWishMsg() {
         wishMsgModal.style.display = "none";
+        stopConfetti();
       }
 
-      function handleFormSubmit(event) {
-        event.preventDefault();
-        const form = event.target;
+      const form = document.getElementById("wishForm");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
         const formData = new FormData(form);
 
-        fetch(form.action, {
-          method: form.method,
-          headers: { Accept: "application/json" },
+        fetch("https://formsubmit.co/ajax/azzzzk366@gmail.com", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+          },
           body: formData,
         })
           .then((response) => {
@@ -270,21 +296,16 @@
               closeWishForm();
               wishMsgModal.style.display = "flex";
               startConfetti();
-              setTimeout(() => {
-                stopConfetti();
-                nextBtn.style.display = "block";
-              }, 7000);
+              nextBtn.classList.remove("hidden");
               form.reset();
             } else {
-              alert("Gagal mengirim wish. Coba lagi ya.");
+              alert("Oops! Terjadi kesalahan saat mengirim. Coba lagi ya.");
             }
           })
           .catch(() => {
-            alert("Gagal mengirim wish. Coba lagi ya.");
+            alert("Tidak dapat mengirim. Cek koneksi internetmu.");
           });
-
-        return false;
-      }
+      });
     </script>
   </body>
 </html>
