@@ -27,7 +27,6 @@
       .shadow-blue {
         box-shadow: 0 8px 20px rgba(139, 147, 255, 0.6);
       }
-      /* Animasi confetti sederhana */
       .confetti {
         position: fixed;
         width: 10px;
@@ -37,6 +36,7 @@
         animation-name: fall;
         animation-timing-function: linear;
         animation-iteration-count: infinite;
+        z-index: 1;
       }
       @keyframes fall {
         0% {
@@ -46,7 +46,6 @@
           transform: translateY(100vh) rotate(360deg);
         }
       }
-      /* Animasi hover zoom in untuk card */
       .card-hover {
         transition: transform 0.25s ease;
         transform-origin: center;
@@ -55,7 +54,6 @@
       .card-hover:hover {
         transform: scale(1.05) translateY(-0.1rem);
       }
-      /* Hover zoom untuk tombol */
       #playPauseBtn,
       #nextBtn {
         transition: transform 0.3s ease;
@@ -105,34 +103,37 @@
       data-aos-delay="200"
       class="z-10 text-center mb-6"
     >
-      <h1
-        class="text-3xl sm:text-5xl font-extrabold text-bluesoft drop-shadow-lg"
-      >
+      <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-bluesoft drop-shadow-lg">
         Play dulu ga siii
       </h1>
     </div>
 
     <!-- Card Now Playing -->
-    <div class="card-hover rounded-3xl z-10">
+    <div class="card-hover rounded-3xl z-10 w-full max-w-md">
       <div
         data-aos="zoom-in"
         data-aos-duration="700"
         data-aos-delay="600"
-        class="shadow-blue rounded-3xl shadow-xl p-6 max-w-[90%] sm:max-w-sm w-full text-center bg-white bg-opacity-90"
+        class="shadow-blue rounded-3xl shadow-xl p-4 sm:p-6 w-full text-center bg-white bg-opacity-90"
       >
-        <div class="flex flex-wrap items-center gap-4 mb-6">
+        <div class="flex flex-col sm:flex-row items-center gap-4 mb-6 text-left">
           <img
             src="assets/cover.jpeg"
             alt="cover"
-            class="w-16 h-16 rounded shadow"
+            class="w-16 h-16 rounded shadow self-center"
           />
-          <div class="flex-1 text-left min-w-[100px]">
-            <h2 class="text-md font-bold text-gray-900">Last Night on Earth</h2>
+          <div class="flex-1 w-full">
+            <h2 class="text-md sm:text-lg font-bold text-gray-900">
+              Last Night on Earth
+            </h2>
             <p class="text-sm text-gray-600">Green Day</p>
+            <p class="text-xs text-gray-500 mt-1 sm:hidden">
+              21st Century Breakdown
+            </p>
           </div>
-          <span class="text-sm text-gray-500 hidden sm:block"
-            >21st Century Breakdown</span
-          >
+          <span class="text-sm text-gray-500 hidden sm:block">
+            21st Century Breakdown
+          </span>
         </div>
 
         <!-- Progress Bar -->
@@ -155,7 +156,7 @@
         <div class="flex justify-center items-center gap-6">
           <button
             id="playPauseBtn"
-            class="w-14 h-14 rounded-full bg-bluesoft text-putihpink shadow-lg text-2xl"
+            class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-bluesoft text-putihpink shadow-lg text-xl sm:text-2xl"
             aria-label="Play/Pause"
           >
             <i class="fas fa-play"></i>
@@ -177,7 +178,7 @@
     <button
       id="nextBtn"
       onclick="location.href='page3.html'"
-      class="z-10 mt-6 bg-pinksoft text-white font-bold py-2 px-6 rounded-full shadow-md"
+      class="z-10 mt-6 bg-pinksoft text-white font-bold py-2 px-5 sm:px-6 rounded-full shadow-md text-sm sm:text-base"
       data-aos="fade-up"
       data-aos-duration="1000"
       data-aos-delay="900"
@@ -198,16 +199,13 @@
         const progressBar = document.getElementById("progressBar");
         const icon = playPauseBtn.querySelector("i");
 
-        // Ambil status dari localStorage
         const savedIsPlaying =
           localStorage.getItem("audioIsPlaying") === "true";
         const savedTime =
           parseFloat(localStorage.getItem("audioCurrentTime")) || 0;
 
-        // Set posisi waktu
         audio.currentTime = savedTime;
 
-        // Sinkronkan tombol awal
         function syncIcon() {
           if (!audio.paused) {
             icon.classList.remove("fa-play");
@@ -218,20 +216,18 @@
           }
         }
 
-        // Autoplay jika perlu
         if (savedIsPlaying) {
           audio
             .play()
             .then(() => syncIcon())
             .catch((e) => {
               console.warn("Autoplay diblokir oleh browser:", e);
-              syncIcon(); // tetap sinkronkan ikon
+              syncIcon();
             });
         } else {
           syncIcon();
         }
 
-        // Event tombol play/pause
         playPauseBtn.addEventListener("click", () => {
           if (audio.paused) {
             audio
@@ -251,7 +247,6 @@
           localStorage.setItem("audioCurrentTime", audio.currentTime);
         });
 
-        // Update progress bar & simpan waktu
         audio.addEventListener("timeupdate", () => {
           if (!isNaN(audio.duration) && audio.duration > 0) {
             const progress = (audio.currentTime / audio.duration) * 100;
@@ -260,7 +255,6 @@
           localStorage.setItem("audioCurrentTime", audio.currentTime);
         });
 
-        // Saat halaman ditutup atau pindah
         window.addEventListener("beforeunload", () => {
           localStorage.setItem("audioCurrentTime", audio.currentTime);
           localStorage.setItem("audioIsPlaying", !audio.paused);
