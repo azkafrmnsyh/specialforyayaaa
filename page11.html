@@ -175,15 +175,30 @@
       }
       typeWriter();
 
-      // Audio resume
+      // Audio controls
       const audio = document.getElementById("audioPlayer");
-      const savedIsPlaying = localStorage.getItem("audioIsPlaying") === "true";
+
+      // Ambil state audio terakhir dari localStorage
       const savedTime =
         parseFloat(localStorage.getItem("audioCurrentTime")) || 0;
+      const savedIsPlaying = localStorage.getItem("audioIsPlaying") === "true";
+
       audio.currentTime = savedTime;
+
+      // Jika sebelumnya audio sedang dimainkan, play otomatis
       if (savedIsPlaying) {
-        audio.play().catch(() => {});
+        audio.play().catch(() => {
+          // Play bisa gagal jika belum interaksi user, abaikan error ini
+        });
       }
+
+      // Simpan state audio secara rutin (setiap detik)
+      setInterval(() => {
+        localStorage.setItem("audioCurrentTime", audio.currentTime);
+        localStorage.setItem("audioIsPlaying", !audio.paused);
+      }, 1000);
+
+      // Juga simpan saat unload sebagai backup
       window.addEventListener("beforeunload", () => {
         localStorage.setItem("audioCurrentTime", audio.currentTime);
         localStorage.setItem("audioIsPlaying", !audio.paused);
