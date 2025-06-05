@@ -196,10 +196,10 @@
         if (isPaused) return;
 
         const now = Date.now();
-        // selisih waktu = (waktu sekarang - startDate) - waktu yang sudah di pause
         const diffMs = now - startDate - pausedAt;
 
-        const days = Math.floor(diffMs / (1000 * 3600 * 24));
+        // Gunakan Math.ceil agar hari sudah termasuk hari saat ini dihitung penuh
+        const days = Math.ceil(diffMs / (1000 * 3600 * 24));
         let remainder = diffMs % (1000 * 3600 * 24);
         const hours = Math.floor(remainder / (1000 * 3600));
         remainder = remainder % (1000 * 3600);
@@ -231,27 +231,19 @@
         intervalId = null;
         startStopBtn.textContent = "Mulai";
 
-
-        // Untuk logika ini kita perlu timestamp saat pause dimulai:
         if (!pauseStartTime) pauseStartTime = Date.now();
-
         pausedAt += Date.now() - pauseStartTime;
         pauseStartTime = null;
       }
 
-      // Variabel untuk menyimpan waktu saat mulai pause:
       let pauseStartTime = null;
 
-      // Ketika pause dipencet, simpan waktu pauseStartTime, lalu jalankan pauseTimer()
       startStopBtn.addEventListener("click", () => {
         if (intervalId) {
-          // mau pause
           pauseStartTime = Date.now();
           pauseTimer();
         } else {
-          // mau mulai / resume
           if (pauseStartTime !== null) {
-            // Kalau resume dari pause, update pausedAt sesuai selisih waktu pause
             pausedAt += Date.now() - pauseStartTime;
             pauseStartTime = null;
           }
@@ -270,7 +262,6 @@
         startTimer();
       });
 
-      // Mulai otomatis saat halaman load:
       startTimer();
     </script>
   </body>
