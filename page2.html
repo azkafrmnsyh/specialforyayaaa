@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Specialforyayaaa - Music</title>
+    <link rel="icon" href="assets/yaya.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <style>
+      body {
+        font-family: "Mali", cursive;
+        background: url("assets/2.jpg") no-repeat center center fixed;
+        background-size: cover;
+        min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+      .shadow-blue {
+        box-shadow: 0 8px 20px rgba(139, 147, 255, 0.6);
+      }
+      .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation-name: fall;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        z-index: 1;
+      }
+      @keyframes fall {
+        0% {
+          transform: translateY(0) rotate(0deg);
+        }
+        100% {
+          transform: translateY(100vh) rotate(360deg);
+        }
+      }
+      .card-hover {
+        transition: transform 0.25s ease;
+        transform-origin: center;
+        cursor: pointer;
+      }
+      .card-hover:hover {
+        transform: scale(1.05) translateY(-0.1rem);
+      }
+      #playPauseBtn,
+      #nextBtn {
+        transition: transform 0.3s ease;
+        transform-origin: center;
+      }
+      #playPauseBtn:hover,
+      #nextBtn:hover {
+        transform: scale(1.1);
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              pinksoft: "#FF90BC",
+              bluesoft: "#8B93FF",
+              putihpink: "#FFF7FC",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="flex flex-col items-center justify-center min-h-screen p-4 relative overflow-hidden"
+  >
+    <!-- Confetti elements -->
+    <script>
+      for (let i = 0; i < 30; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.animationDuration = 3 + Math.random() * 3 + "s";
+        const colors = ["#FF90BC", "#8B93FF", "#FFF7FC"];
+        confetti.style.backgroundColor =
+          colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.top = "-" + Math.random() * 20 + "vh";
+        document.body.appendChild(confetti);
+      }
+    </script>
+
+    <!-- Judul -->
+    <div
+      data-aos="fade-up"
+      data-aos-duration="1000"
+      data-aos-delay="200"
+      class="z-10 text-center mb-6"
+    >
+      <h1
+        class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-bluesoft drop-shadow-lg"
+      >
+        Play dulu ga siii
+      </h1>
+    </div>
+
+    <!-- Card Now Playing -->
+    <div
+      class="card-hover rounded-3xl z-10 w-full max-w-[320px] sm:max-w-md mx-auto"
+    >
+      <div
+        data-aos="zoom-in"
+        data-aos-duration="700"
+        data-aos-delay="600"
+        class="shadow-blue rounded-3xl shadow-xl p-4 sm:p-6 w-full text-center bg-white bg-opacity-90"
+      >
+        <div class="flex flex-row items-center gap-4 mb-6 text-left">
+          <img
+            src="assets/cover.jpeg"
+            alt="cover"
+            class="w-16 h-16 sm:w-20 sm:h-20 rounded shadow self-center"
+          />
+          <div class="flex-1 w-full">
+            <h2 class="text-md sm:text-lg font-bold text-gray-900">
+              Last Night on Earth
+            </h2>
+            <p class="text-sm text-gray-600">Green Day</p>
+            <p class="text-xs text-gray-500 mt-1">21st Century Breakdown</p>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div
+          class="relative w-full h-2 bg-pinksoft/30 rounded-full overflow-hidden mb-3"
+          aria-label="progress bar"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          id="progressContainer"
+        >
+          <div
+            id="progressBar"
+            class="h-full bg-pinksoft rounded-full w-0 transition-all duration-200"
+          ></div>
+        </div>
+
+        <!-- Play Button -->
+        <div class="flex justify-center items-center gap-6">
+          <button
+            id="playPauseBtn"
+            class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-bluesoft text-putihpink shadow-lg text-xl sm:text-2xl"
+            aria-label="Play/Pause"
+          >
+            <i class="fas fa-play"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden Audio -->
+    <audio id="audioPlayer" preload="auto" crossorigin="anonymous">
+      <source
+        src="assets/Last Night on Earth - Green Day.mp3"
+        type="audio/mpeg"
+      />
+      Browsermu tidak mendukung pemutar audio.
+    </audio>
+
+    <!-- Tombol Lanjut -->
+    <button
+      id="nextBtn"
+      onclick="location.href='page3.html'"
+      class="z-10 mt-6 bg-pinksoft text-white font-bold py-2 px-5 sm:px-6 rounded-full shadow-md text-sm sm:text-base"
+      data-aos="fade-up"
+      data-aos-duration="1000"
+      data-aos-delay="900"
+    >
+      lanjutt
+    </button>
+
+    <!-- AOS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const audio = document.getElementById("audioPlayer");
+        const playPauseBtn = document.getElementById("playPauseBtn");
+        const progressBar = document.getElementById("progressBar");
+        const icon = playPauseBtn.querySelector("i");
+
+        const savedIsPlaying =
+          localStorage.getItem("audioIsPlaying") === "true";
+        const savedTime =
+          parseFloat(localStorage.getItem("audioCurrentTime")) || 0;
+
+        audio.currentTime = savedTime;
+
+        function syncIcon() {
+          if (!audio.paused) {
+            icon.classList.remove("fa-play");
+            icon.classList.add("fa-pause");
+          } else {
+            icon.classList.remove("fa-pause");
+            icon.classList.add("fa-play");
+          }
+        }
+
+        if (savedIsPlaying) {
+          audio
+            .play()
+            .then(() => syncIcon())
+            .catch((e) => {
+              console.warn("Autoplay diblokir oleh browser:", e);
+              syncIcon();
+            });
+        } else {
+          syncIcon();
+        }
+
+        playPauseBtn.addEventListener("click", () => {
+          if (audio.paused) {
+            audio
+              .play()
+              .then(() => {
+                localStorage.setItem("audioIsPlaying", "true");
+                syncIcon();
+              })
+              .catch((e) => {
+                console.error("Gagal play:", e);
+              });
+          } else {
+            audio.pause();
+            localStorage.setItem("audioIsPlaying", "false");
+            syncIcon();
+          }
+          localStorage.setItem("audioCurrentTime", audio.currentTime);
+        });
+
+        audio.addEventListener("timeupdate", () => {
+          if (!isNaN(audio.duration) && audio.duration > 0) {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = progress + "%";
+          }
+          localStorage.setItem("audioCurrentTime", audio.currentTime);
+        });
+
+        window.addEventListener("beforeunload", () => {
+          localStorage.setItem("audioCurrentTime", audio.currentTime);
+          localStorage.setItem("audioIsPlaying", !audio.paused);
+        });
+      });
+    </script>
+  </body>
+</html>

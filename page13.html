@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="assets/yaya.png" />
+    <title>Specialforyayaaa - Last</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: "Mali", cursive;
+        background: url("assets/13.jpg") no-repeat center center fixed;
+        background-size: cover;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      .shadow-blue {
+        box-shadow: 0 8px 20px rgba(139, 147, 255, 0.6);
+      }
+      .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation-name: fall;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        z-index: 1; /* confetti di belakang card */
+      }
+      @keyframes fall {
+        0% {
+          transform: translateY(0) rotate(0deg);
+        }
+        100% {
+          transform: translateY(100vh) rotate(360deg);
+        }
+      }
+      #audioPlayer {
+        display: none;
+      }
+      #typewriterText {
+        white-space: pre-wrap;
+        font-size: 1.125rem;
+        line-height: 1.6;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              pinksoft: "#FF90BC",
+              bluesoft: "#8B93FF",
+              putihpink: "#FFF7FC",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-putihpink min-h-screen flex flex-col justify-center items-center relative overflow-hidden p-4 sm:p-6"
+  >
+    <!-- Confetti -->
+    <script>
+      for (let i = 0; i < 30; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.animationDuration = 3 + Math.random() * 3 + "s";
+        const colors = ["#FF90BC", "#8B93FF", "#FFF7FC"];
+        confetti.style.backgroundColor =
+          colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.top = "-" + Math.random() * 20 + "vh";
+        document.body.appendChild(confetti);
+      }
+    </script>
+
+    <!-- Judul -->
+    <div
+      data-aos="fade-up"
+      data-aos-duration="1000"
+      class="text-center mb-6 z-10"
+    >
+      <h3
+        class="text-4xl sm:text-6xl font-extrabold text-bluesoft drop-shadow-lg"
+      >
+        Selamat ulang tahun yaa yayaaa!!!
+      </h3>
+    </div>
+
+    <!-- Foto di Tengah -->
+    <div
+      data-aos="zoom-in"
+      data-aos-duration="1000"
+      data-aos-delay="300"
+      class="mb-6 z-10"
+    >
+      <img
+        src="assets/yaya.png"
+        alt="Foto Yayaa"
+        class="w-56 h-56 sm:w-72 sm:h-72 rounded-full border-4 border-pinksoft shadow-lg object-cover"
+      />
+    </div>
+
+    <!-- Quotes -->
+    <div
+      data-aos="fade-up"
+      data-aos-duration="1000"
+      data-aos-delay="600"
+      class="relative bg-pinksoft bg-opacity-80 rounded-3xl shadow-blue p-4 sm:p-8 max-w-2xl text-putihpink leading-relaxed sm:text-lg overflow-y-auto max-h-[60vh] border-4 border-pinksoft z-10"
+    >
+      <p id="typewriterText" class="text-center"></p>
+    </div>
+
+    <!-- Tombol Kembali -->
+    <div
+      data-aos="fade-up"
+      data-aos-duration="1000"
+      data-aos-delay="900"
+      class="mt-8 z-10"
+    >
+      <button
+        onclick="location.href='index.html'"
+        class="bg-bluesoft text-putihpink font-bold py-2 px-6 sm:py-3 sm:px-8 rounded-full shadow-lg hover:bg-pinksoft transition duration-300 flex items-center gap-2 hover:scale-105 hover:shadow-[0_0_15px_4px_rgba(255,144,188,0.6)]"
+      >
+        kembali ke halaman utama
+      </button>
+    </div>
+
+    <!-- Audio -->
+    <audio id="audioPlayer" preload="auto">
+      <source
+        src="assets/Last Night on Earth - Green Day.mp3"
+        type="audio/mpeg"
+      />
+      Browsermu tidak mendukung pemutar audio.
+    </audio>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init({ offset: 0, duration: 800, once: true });
+
+      // Typewriter Quotes
+      const quotes = [
+        "You are stronger than you think, and more loved than you know.",
+      ];
+
+      const typewriterTextEl = document.getElementById("typewriterText");
+      let quoteIndex = 0;
+      let charIndex = 0;
+
+      function typeWriter() {
+        if (quoteIndex < quotes.length) {
+          if (charIndex < quotes[quoteIndex].length) {
+            typewriterTextEl.innerHTML += quotes[quoteIndex].charAt(charIndex);
+            charIndex++;
+            setTimeout(typeWriter, 50);
+          } else {
+            // pause, then type next quote
+            setTimeout(() => {
+              typewriterTextEl.innerHTML += "\n";
+              quoteIndex++;
+              charIndex = 0;
+              setTimeout(typeWriter, 500);
+            }, 800);
+          }
+        }
+      }
+      typeWriter();
+
+      // Audio controls
+      const audio = document.getElementById("audioPlayer");
+
+      // Ambil state audio terakhir dari localStorage
+      const savedTime =
+        parseFloat(localStorage.getItem("audioCurrentTime")) || 0;
+      const savedIsPlaying = localStorage.getItem("audioIsPlaying") === "true";
+
+      audio.currentTime = savedTime;
+
+      // Jika sebelumnya audio sedang dimainkan, play otomatis
+      if (savedIsPlaying) {
+        audio.play().catch(() => {
+          // Play bisa gagal jika belum interaksi user, abaikan error ini
+        });
+      }
+
+      // Simpan state audio secara rutin (setiap detik)
+      setInterval(() => {
+        localStorage.setItem("audioCurrentTime", audio.currentTime);
+        localStorage.setItem("audioIsPlaying", !audio.paused);
+      }, 1000);
+
+      // Juga simpan saat unload sebagai backup
+      window.addEventListener("beforeunload", () => {
+        localStorage.setItem("audioCurrentTime", audio.currentTime);
+        localStorage.setItem("audioIsPlaying", !audio.paused);
+      });
+    </script>
+  </body>
+</html>

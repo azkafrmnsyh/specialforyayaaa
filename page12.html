@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="assets/yaya.png" />
+    <title>Specialforyayaaa - Stopwatch</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      body {
+        font-family: "Mali", cursive;
+        background: url("assets/12.jpg") no-repeat center center fixed;
+        background-size: cover;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .shadow-blue {
+        box-shadow: 0 8px 20px rgba(139, 147, 255, 0.6);
+      }
+
+      .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation-name: fall;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+      }
+
+      @keyframes fall {
+        0% {
+          transform: translateY(0) rotate(0deg);
+        }
+        100% {
+          transform: translateY(100vh) rotate(360deg);
+        }
+      }
+
+      #audioPlayer {
+        display: none;
+      }
+
+      /* Stopwatch Animasi */
+      .digits {
+        letter-spacing: 0.1em;
+      }
+      .glow {
+        text-shadow: 0 0 10px #ff90bc, 0 0 20px #fff7fc;
+      }
+    </style>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              pinksoft: "#FF90BC",
+              bluesoft: "#8B93FF",
+              putihpink: "#FFF7FC",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-putihpink min-h-screen flex flex-col justify-center items-center relative overflow-hidden p-4 sm:p-6"
+  >
+    <!-- Confetti -->
+    <script>
+      for (let i = 0; i < 30; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.animationDuration = 3 + Math.random() * 3 + "s";
+        const colors = ["#FF90BC", "#8B93FF", "#FFF7FC"];
+        confetti.style.backgroundColor =
+          colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.top = "-" + Math.random() * 20 + "vh";
+        document.body.appendChild(confetti);
+      }
+    </script>
+
+    <div class="text-center max-w-xl mx-4 sm:mx-auto">
+      <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+        <h4
+          class="text-4xl sm:text-6xl font-extrabold text-bluesoft drop-shadow-lg mb-4 sm:mb-6"
+        >
+          How long have we been together?
+        </h4>
+      </div>
+
+      <!-- Stopwatch -->
+      <div
+        data-aos="fade-up"
+        data-aos-duration="800"
+        data-aos-delay="500"
+        class="bg-putihpink border-2 border-bluesoft shadow-blue rounded-3xl p-6 sm:p-8 flex flex-col items-center space-y-6 hover-zoom"
+      >
+        <div
+          id="stopwatch"
+          class="text-5xl sm:text-6xl font-bold text-pinksoft glow digits"
+        >
+          0 hari 00:00:00
+        </div>
+        <div class="flex space-x-4">
+          <button
+            id="startStopBtn"
+            class="bg-bluesoft text-putihpink px-5 py-2 rounded-full font-bold shadow-lg hover:bg-pinksoft transition duration-300"
+          >
+            Pause
+          </button>
+          <button
+            id="resetBtn"
+            class="bg-pinksoft text-white px-5 py-2 rounded-full font-bold shadow-lg hover:bg-bluesoft transition duration-300"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <div
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-delay="800"
+        class="flex justify-center mt-8"
+      >
+        <button
+          onclick="location.href='page13.html'"
+          class="bg-bluesoft text-putihpink font-bold py-2 px-6 sm:py-3 sm:px-8 rounded-full shadow-lg hover:bg-pinksoft transition duration-300 flex items-center gap-2 sm:gap-3 hover:scale-105 hover:shadow-[0_0_15px_4px_rgba(255,144,188,0.6)]"
+        >
+          lasttt
+        </button>
+      </div>
+    </div>
+
+    <audio id="audioPlayer" preload="auto">
+      <source
+        src="assets/Last Night on Earth - Green Day.mp3"
+        type="audio/mpeg"
+      />
+      Browsermu tidak mendukung pemutar audio.
+    </audio>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        offset: 0,
+        duration: 800,
+        once: true,
+      });
+    </script>
+
+    <script>
+      // Stopwatch realtime dari tanggal tetap dengan pause/resume
+
+      const stopwatchDisplay = document.getElementById("stopwatch");
+      const startStopBtn = document.getElementById("startStopBtn");
+      const resetBtn = document.getElementById("resetBtn");
+
+      const startDate = new Date("2024-03-13T00:00:00").getTime();
+
+      let intervalId = null;
+      let isPaused = false;
+      let pausedAt = 0; // total milidetik saat pause
+
+      function updateDisplay() {
+        if (isPaused) return;
+
+        const now = Date.now();
+        const diffMs = now - startDate - pausedAt;
+
+        // Gunakan Math.ceil agar hari sudah termasuk hari saat ini dihitung penuh
+        const days = Math.ceil(diffMs / (1000 * 3600 * 24));
+        let remainder = diffMs % (1000 * 3600 * 24);
+        const hours = Math.floor(remainder / (1000 * 3600));
+        remainder = remainder % (1000 * 3600);
+        const minutes = Math.floor(remainder / (1000 * 60));
+        remainder = remainder % (1000 * 60);
+        const seconds = Math.floor(remainder / 1000);
+
+        const hStr = String(hours).padStart(2, "0");
+        const mStr = String(minutes).padStart(2, "0");
+        const sStr = String(seconds).padStart(2, "0");
+
+        stopwatchDisplay.textContent = `${days} hari ${hStr}:${mStr}:${sStr}`;
+      }
+
+      function startTimer() {
+        if (intervalId) return; // sudah jalan
+
+        isPaused = false;
+        intervalId = setInterval(updateDisplay, 1000);
+        updateDisplay();
+        startStopBtn.textContent = "Pause";
+      }
+
+      function pauseTimer() {
+        if (!intervalId) return; // sudah pause
+
+        isPaused = true;
+        clearInterval(intervalId);
+        intervalId = null;
+        startStopBtn.textContent = "Mulai";
+
+        if (!pauseStartTime) pauseStartTime = Date.now();
+        pausedAt += Date.now() - pauseStartTime;
+        pauseStartTime = null;
+      }
+
+      let pauseStartTime = null;
+
+      startStopBtn.addEventListener("click", () => {
+        if (intervalId) {
+          pauseStartTime = Date.now();
+          pauseTimer();
+        } else {
+          if (pauseStartTime !== null) {
+            pausedAt += Date.now() - pauseStartTime;
+            pauseStartTime = null;
+          }
+          startTimer();
+        }
+      });
+
+      resetBtn.addEventListener("click", () => {
+        clearInterval(intervalId);
+        intervalId = null;
+        isPaused = false;
+        pausedAt = 0;
+        pauseStartTime = null;
+        startStopBtn.textContent = "Pause";
+        updateDisplay();
+        startTimer();
+      });
+
+      startTimer();
+
+      // Audio controls
+      const audio = document.getElementById("audioPlayer");
+
+      // Ambil state audio terakhir dari localStorage
+      const savedTime =
+        parseFloat(localStorage.getItem("audioCurrentTime")) || 0;
+      const savedIsPlaying = localStorage.getItem("audioIsPlaying") === "true";
+
+      audio.currentTime = savedTime;
+
+      // Jika sebelumnya audio sedang dimainkan, play otomatis
+      if (savedIsPlaying) {
+        audio.play().catch(() => {
+          // Play bisa gagal jika belum interaksi user, abaikan error ini
+        });
+      }
+
+      // Simpan state audio secara rutin (setiap detik)
+      setInterval(() => {
+        localStorage.setItem("audioCurrentTime", audio.currentTime);
+        localStorage.setItem("audioIsPlaying", !audio.paused);
+      }, 1000);
+
+      // Juga simpan saat unload sebagai backup
+      window.addEventListener("beforeunload", () => {
+        localStorage.setItem("audioCurrentTime", audio.currentTime);
+        localStorage.setItem("audioIsPlaying", !audio.paused);
+      });
+    </script>
+  </body>
+</html>
